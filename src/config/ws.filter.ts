@@ -6,7 +6,6 @@ export class WsFilter {
   public catch(exception: WsException, host: ArgumentsHost) {
     // Here you have the exception and you can check the data
 
-    console.log(exception);
     const ctx = host.switchToWs();
     const client = ctx.getClient() as WebSocket;
     client.send(

@@ -11,7 +11,6 @@ export class WSValidationPipe extends ValidationPipe {
         return new WsException('ERROR');
       }
       const errors = this.flattenValidationErrors(validationErrors);
-      console.log(errors);
       return new WsException(errors);
     };
   }
