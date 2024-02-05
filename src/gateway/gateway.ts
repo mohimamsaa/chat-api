@@ -19,6 +19,7 @@ import { WsFilter } from 'src/config/ws.filter';
 import { ChatService } from 'src/chat/chat.service';
 import { UserService } from 'src/user/user.service';
 import { ChatDocument } from 'src/chat/chat.entity';
+import { MessageProducerService } from 'src/producer/producer.service';
 
 @UsePipes(new WSValidationPipe())
 @UseFilters(new WsFilter())
@@ -30,6 +31,7 @@ export class WSGateway
   constructor(
     private readonly userService: UserService,
     private readonly chatService: ChatService,
+    private readonly messageProducerService: MessageProducerService,
   ) {}
 
   @WebSocketServer()
@@ -42,9 +44,19 @@ export class WSGateway
   ): Promise<string> {
     this.logger.log('Client Send Message', client.id);
     this.logger.log('Client Send Payload', JSON.stringify(data));
-    const chat = await this.chatService.processChat(data);
+    const result =
+      await this.messageProducerService.publishMessage<ReceiveMessageDto>(
+        'exchange_direct',
+        'create-chat-key',
+        {
+          ...data,
+          message: data.message,
+        },
+      );
+    console.log(result);
+    // const chat = await this.chatService.processChat(data);
 
-    this.sendMessageToRecipient(chat);
+    // this.sendMessageToRecipient(chat);
     return 'Hello world!';
   }
 

@@ -6,12 +6,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { ChatModule } from './chat/chat.module';
+import { ProducerModule } from './producer/producer.module';
+import { ConsumerModule } from './consumer/consumer.module';
 
 @Module({
   imports: [
     GatewayModule,
     ChatModule,
     UserModule,
+    ConsumerModule,
+    ProducerModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
   ],
