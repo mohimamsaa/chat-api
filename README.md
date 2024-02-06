@@ -39,7 +39,7 @@ $ npm run start:prod
 ## Usage
 
 - Open Postman
-- Create First User with endpoint and save userId on reponse
+- Create First User with endpoint and save userId on response
 
 ```bash
 POST http://localhost:3000/user
@@ -49,7 +49,7 @@ POST http://localhost:3000/user
 }
 ```
 
-- Create Second User with endpoint and save userId on reponse
+- Create Second User with endpoint and save userId on response
 
 ```bash
 POST http://localhost:3000/user
@@ -59,7 +59,7 @@ POST http://localhost:3000/user
 }
 ```
 
-- Create websocket connection using postman with this url
+- Create websocket connection for user 1 using postman
 
 ```bash
 url ws://172.29.181.93:3000
@@ -68,7 +68,7 @@ header {
 }
 ```
 
-- Create another websocket connection using postman with this url
+- Create another websocket connection for user 2 using postman
 
 ```bash
 url ws://172.29.181.93:3000
