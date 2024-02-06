@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import amqp from 'amqp-connection-manager';
 import { ChatService } from 'src/chat/chat.service';
 import { WSGateway } from 'src/gateway/gateway';
 
 @Injectable()
 export class ChatConsumerService {
-  private readonly url = 'amqp://localhost:5672';
+  private readonly url = process.env.RABBITMQ_AMQP_URL;
   private readonly CHAT_QUEUE = 'chat_queue';
+  private readonly logger = new Logger(ChatConsumerService.name);
 
   constructor(
     private readonly chatService: ChatService,
@@ -31,7 +32,7 @@ export class ChatConsumerService {
             await channelWrapper.bindQueue(queue.queue, exchange, routingKey);
             channelWrapper.consume(queue.queue, async (msg) => {
               if (msg) {
-                console.log(`Received message: ${msg.content}`);
+                this.logger.log(`Received message: ${msg.content}`);
                 const data = JSON.parse(msg.content);
 
                 const chat = await this.chatService.processChat(data);
@@ -44,7 +45,7 @@ export class ChatConsumerService {
             return;
           })
           .catch((exchangeError) => {
-            console.log('exchangeError', exchangeError);
+            this.logger.error('exchangeError', exchangeError);
 
             connection.close();
           });

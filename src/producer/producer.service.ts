@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import amqp from 'amqp-connection-manager';
 
 @Injectable()
 export class MessageProducerService {
+  private readonly url = process.env.RABBITMQ_AMQP_URL;
+  private readonly logger = new Logger(MessageProducerService.name);
+
   constructor() {}
-  private readonly url = 'amqp://localhost:5672';
 
   async publishMessage<T>(exchange: string, routingKey: string, message: T) {
     const connection = amqp.connect([this.url]);
@@ -26,9 +28,9 @@ export class MessageProducerService {
               {},
               (publishError) => {
                 if (publishError) {
-                  console.log(publishError);
+                  this.logger.error('publishError', publishError);
                 } else {
-                  console.log(`Sent message: ${JSON.stringify(message)}`);
+                  this.logger.log(`Sent message: ${JSON.stringify(message)}`);
                 }
 
                 // Close channel
@@ -40,25 +42,11 @@ export class MessageProducerService {
             );
           })
           .catch((exchangeError) => {
-            console.log('exchangeError', exchangeError);
+            this.logger.error('exchangeError', exchangeError);
             // Close connection
             connection.close();
           });
       });
     });
-    // const channel = connection.createChannel();
-    // try {
-    //   console.log(connection.isConnected());
-
-    //   await channel.assertExchange(exchange, 'direct', { durable: false });
-    //   // console.log(channel);
-    //   // Publish the message
-    //   channel.publish(exchange, routingKey, message);
-    //   console.log(`Sent message: ${message}`);
-    // } finally {
-    //   await connection.close();
-    //   await channel.close();
-    // }
-    return 'channel';
   }
 }

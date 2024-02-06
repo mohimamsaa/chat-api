@@ -8,13 +8,7 @@ import { CreateChatDto } from './dto/create.dto';
 export class ChatService {
   constructor(@InjectModel('Chat') private chatModel: Model<ChatDocument>) {}
 
-  // for consume queue later
-  createChat(createChatDto: CreateChatDto) {
+  processChat(createChatDto: CreateChatDto) {
     return this.chatModel.create(createChatDto);
-  }
-
-  // for produce queue later
-  processChat(createChatDto) {
-    return this.createChat(createChatDto);
   }
 }
