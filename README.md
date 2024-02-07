@@ -71,7 +71,7 @@ POST http://localhost:3000/user
 - Create websocket connection for user 1 using postman
 
 ```bash
-url ws://172.29.181.93:3000
+url ws://localhost:3000
 header {
   x-user-id: "user-id-1"
 }
@@ -80,7 +80,7 @@ header {
 - Create another websocket connection for user 2 using postman
 
 ```bash
-url ws://172.29.181.93:3000
+url ws://localhost:3000
 header {
   x-user-id: "user-id-2"
 }
