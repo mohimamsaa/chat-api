@@ -4,6 +4,15 @@ Chat API Using NestJS, WebSocket for communication, RabbitMQ for Message Queuein
 
 ## Installation
 
+- Use command below to configure terraform network
+
+```bash
+
+$ terraform init
+
+$ terraform apply
+```
+
 - Use command below to create and run docker image
 
 ```bash
@@ -78,6 +87,15 @@ header {
 ```
 
 - Send message with event "message" with user1 through websocket connection and then the message should appear on user2 websocket connection
+
+```bash
+Example Payload Message
+{
+    "recipientId": string,
+    "message": string,
+    "senderId": string
+}
+```
 
 ## Support
 
